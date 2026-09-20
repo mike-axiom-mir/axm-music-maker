@@ -1,37 +1,44 @@
 # START HERE NEXT
 
-Continue this repository as structured music and performance authoring.
+The first structured-score milestone is now complete and verified.
 
-## First build
+## Preserve what exists
 
-Create a canonical project model for:
-- tempo / meter;
-- musical events;
-- clips / phrases;
-- stems;
-- sections;
-- arrangement;
-- adaptive game states;
-- transitions.
+Do **not** rebuild the canonical music model from scratch.
 
-Build one small proof with at least:
-- exploration stem set;
-- danger variation;
-- combat variation;
-- inspectable transition rules.
+`axm_music/project.py` already validates `axm.music-project/v1` with tempo/meter, note and voice-line events, clips, stems, sections, states, transitions and explicit provenance.
 
-The structure must stay editable after generation.
+`axm_music/adaptive.py` already resolves explicit triggers into deterministic transition receipts with immediate / beat / bar quantization.
 
-## AI and deterministic growth
+`examples/three_state_score.json` already proves an editable exploration -> danger -> combat score.
 
-AI may propose melodies, arrangements, voices, lyrics or timbres. Preserve those proposals as explicit source/provenance.
+## Strongest next bounded gap
 
-As reusable musical atoms, patterns, transformations and rules accumulate, prefer deterministic/replayable reuse where it is actually sufficient. Do not call AI output deterministic merely because the same prompt was used twice.
+Connect structured score state to a render/playback contract without flattening the source model.
 
-## Voice
+The next builder should add the smallest adapter that can turn one section/state into an explicit render plan suitable for `axm-audio-fabric`, while preserving:
 
-Keep vocals and NPC voice-over here initially as timed performances. Human recordings must be first-class inputs. Voice cloning or identity-sensitive synthesis must remain consent/provenance aware.
+- note/voice event ids;
+- source provenance;
+- stem identity;
+- timing in canonical ticks;
+- project hash;
+- state/section identity.
 
-## Integration
+Prefer a render **plan/contract** before adding a large synthesis engine here. Audio Fabric owns low-level sound generation and playback.
 
-Use Audio Fabric for low-level synthesis/render/playback. Export stems/performances for Sound Mixer rather than building a second mixer.
+## After that
+
+High-value growth directions include:
+
+- reusable motif/pattern transformation rules;
+- chord/harmony representation;
+- human MIDI/audio import with provenance;
+- editable voice takes and recording references;
+- adaptive crossfades/stingers layered on top of explicit state transitions;
+- AI proposal records that remain distinguishable from deterministic transformations;
+- Sound Mixer export/import contract.
+
+## Truth boundary
+
+Canonical state and green transition tests prove structural correctness, not musical quality. Do not claim composition quality, vocal quality, mix quality or game feel without actual listening/acceptance evidence.
