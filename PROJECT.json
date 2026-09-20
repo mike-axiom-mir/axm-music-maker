@@ -1,0 +1,31 @@
+{
+  "schema": "axm.project-definition/v1",
+  "id": "axm-music-maker",
+  "role": "music-and-performance-authoring",
+  "owns": [
+    "composition",
+    "arrangement",
+    "stems",
+    "adaptive-music",
+    "vocals",
+    "npc-voice-performance",
+    "human-ai-coauthoring",
+    "musical-source-state"
+  ],
+  "does_not_own": [
+    "low-level-audio-engine",
+    "generic-mixer-ui",
+    "gameplay-ability-logic"
+  ],
+  "neighbors": [
+    "mike-axiom-mir/axm-audio-fabric",
+    "mike-axiom-mir/axm-sound-mixer"
+  ],
+  "first_contracts": [
+    "axm.music-project/v1",
+    "axm.music-stem/v1",
+    "axm.performance-line/v1",
+    "axm.adaptive-score/v1"
+  ],
+  "first_proof": "structured exploration/danger/combat score with editable stems and deterministic state transitions"
+}
