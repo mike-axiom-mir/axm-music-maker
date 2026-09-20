@@ -32,6 +32,20 @@ class MusicProjectTests(unittest.TestCase):
         reordered = {key: project[key] for key in reversed(list(project.keys()))}
         self.assertEqual(project_hash(project), project_hash(reordered))
 
+    def test_ai_proposal_provenance_is_not_silently_rewritten(self):
+        project = load_example()
+        event = project["clips"][0]["events"][0]
+        event["provenance"] = {
+            "origin": "ai",
+            "source_id": "proposal-001",
+            "model_ref": "external-composer-example"
+        }
+        validated = validate_project(project)
+        kept = validated["clips"][0]["events"][0]["provenance"]
+        self.assertEqual(kept["origin"], "ai")
+        self.assertEqual(kept["source_id"], "proposal-001")
+        self.assertEqual(kept["model_ref"], "external-composer-example")
+
     def test_bar_transition_quantizes_without_hidden_choice(self):
         receipt = resolve_transition(
             load_example(),
