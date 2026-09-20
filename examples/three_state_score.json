@@ -1,0 +1,74 @@
+{
+  "schema": "axm.music-project/v1",
+  "id": "three-state-proof",
+  "tempo_bpm": 96,
+  "ppq": 960,
+  "meter": {"numerator": 4, "denominator": 4},
+  "provenance": {"origin": "human", "source_id": "axm-music-maker-seed"},
+  "clips": [
+    {
+      "id": "motif-a",
+      "length_ticks": 3840,
+      "provenance": {"origin": "human", "source_id": "seed-motif-a"},
+      "events": [
+        {"id": "m1", "kind": "note", "start_tick": 0, "duration_ticks": 720, "pitch_midi": 57, "velocity": 72, "provenance": {"origin": "human", "source_id": "seed-motif-a"}},
+        {"id": "m2", "kind": "note", "start_tick": 960, "duration_ticks": 720, "pitch_midi": 60, "velocity": 68, "provenance": {"origin": "human", "source_id": "seed-motif-a"}},
+        {"id": "m3", "kind": "note", "start_tick": 1920, "duration_ticks": 720, "pitch_midi": 64, "velocity": 74, "provenance": {"origin": "human", "source_id": "seed-motif-a"}},
+        {"id": "m4", "kind": "note", "start_tick": 2880, "duration_ticks": 720, "pitch_midi": 60, "velocity": 66, "provenance": {"origin": "human", "source_id": "seed-motif-a"}}
+      ]
+    },
+    {
+      "id": "danger-pulse",
+      "length_ticks": 3840,
+      "provenance": {"origin": "deterministic", "source_id": "pulse-pattern-v1"},
+      "events": [
+        {"id": "d1", "kind": "note", "start_tick": 0, "duration_ticks": 240, "pitch_midi": 45, "velocity": 82, "provenance": {"origin": "deterministic", "source_id": "pulse-pattern-v1"}},
+        {"id": "d2", "kind": "note", "start_tick": 960, "duration_ticks": 240, "pitch_midi": 45, "velocity": 86, "provenance": {"origin": "deterministic", "source_id": "pulse-pattern-v1"}},
+        {"id": "d3", "kind": "note", "start_tick": 1920, "duration_ticks": 240, "pitch_midi": 45, "velocity": 90, "provenance": {"origin": "deterministic", "source_id": "pulse-pattern-v1"}},
+        {"id": "d4", "kind": "note", "start_tick": 2880, "duration_ticks": 240, "pitch_midi": 45, "velocity": 94, "provenance": {"origin": "deterministic", "source_id": "pulse-pattern-v1"}}
+      ]
+    },
+    {
+      "id": "combat-drive",
+      "length_ticks": 3840,
+      "provenance": {"origin": "deterministic", "source_id": "combat-drive-v1"},
+      "events": [
+        {"id": "c1", "kind": "note", "start_tick": 0, "duration_ticks": 480, "pitch_midi": 33, "velocity": 102, "provenance": {"origin": "deterministic", "source_id": "combat-drive-v1"}},
+        {"id": "c2", "kind": "note", "start_tick": 960, "duration_ticks": 480, "pitch_midi": 36, "velocity": 98, "provenance": {"origin": "deterministic", "source_id": "combat-drive-v1"}},
+        {"id": "c3", "kind": "note", "start_tick": 1920, "duration_ticks": 480, "pitch_midi": 33, "velocity": 108, "provenance": {"origin": "deterministic", "source_id": "combat-drive-v1"}},
+        {"id": "c4", "kind": "note", "start_tick": 2880, "duration_ticks": 480, "pitch_midi": 38, "velocity": 104, "provenance": {"origin": "deterministic", "source_id": "combat-drive-v1"}}
+      ]
+    },
+    {
+      "id": "danger-voice",
+      "length_ticks": 3840,
+      "provenance": {"origin": "human", "source_id": "seed-dialogue"},
+      "events": [
+        {"id": "v1", "kind": "voice_line", "start_tick": 1920, "duration_ticks": 960, "speaker_id": "npc-guide", "text": "Movement ahead.", "provenance": {"origin": "human", "source_id": "seed-dialogue"}}
+      ]
+    }
+  ],
+  "stems": [
+    {"id": "motif", "role": "melody", "clip_ids": ["motif-a"]},
+    {"id": "danger-rhythm", "role": "rhythm", "clip_ids": ["danger-pulse"]},
+    {"id": "combat-bass", "role": "bass", "clip_ids": ["combat-drive"]},
+    {"id": "danger-dialogue", "role": "voice", "clip_ids": ["danger-voice"]}
+  ],
+  "sections": [
+    {"id": "exploration-section", "length_bars": 4, "stem_ids": ["motif"]},
+    {"id": "danger-section", "length_bars": 4, "stem_ids": ["motif", "danger-rhythm", "danger-dialogue"]},
+    {"id": "combat-section", "length_bars": 4, "stem_ids": ["motif", "danger-rhythm", "combat-bass"]}
+  ],
+  "states": [
+    {"id": "exploration", "section_id": "exploration-section"},
+    {"id": "danger", "section_id": "danger-section"},
+    {"id": "combat", "section_id": "combat-section"}
+  ],
+  "initial_state": "exploration",
+  "transitions": [
+    {"id": "explore-to-danger", "from_state": "exploration", "trigger": "threat", "to_state": "danger", "quantize": "bar", "priority": 10},
+    {"id": "danger-to-combat", "from_state": "danger", "trigger": "engage", "to_state": "combat", "quantize": "beat", "priority": 20},
+    {"id": "danger-to-explore", "from_state": "danger", "trigger": "calm", "to_state": "exploration", "quantize": "bar", "priority": 10},
+    {"id": "combat-to-explore", "from_state": "combat", "trigger": "calm", "to_state": "exploration", "quantize": "bar", "priority": 10}
+  ]
+}
