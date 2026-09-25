@@ -13,6 +13,20 @@ def load_example():
 
 
 class MusicProjectTests(unittest.TestCase):
+    def test_tempo_must_be_positive_and_finite(self):
+        for tempo in (float("nan"), float("inf"), -float("inf"), True, 0, -1):
+            with self.subTest(tempo=tempo):
+                project = load_example()
+                project["tempo_bpm"] = tempo
+                with self.assertRaises(ProjectValidationError):
+                    validate_project(project)
+
+    def test_finite_fractional_tempo_survives_validation_and_hashing(self):
+        project = load_example()
+        project["tempo_bpm"] = 123.5
+        self.assertEqual(validate_project(project)["tempo_bpm"], 123.5)
+        self.assertEqual(project_hash(project), project_hash(json.loads(json.dumps(project))))
+
     def test_example_is_valid_and_keeps_editable_structure(self):
         project = validate_project(load_example())
         self.assertEqual(project["initial_state"], "exploration")

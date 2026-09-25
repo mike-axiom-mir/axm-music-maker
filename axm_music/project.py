@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from copy import deepcopy
 from typing import Any
 
@@ -122,8 +123,9 @@ def validate_project(project: dict[str, Any]) -> dict[str, Any]:
 
     _require_id(_require(project, "id", "project"), "project")
     tempo = _require(project, "tempo_bpm", "project")
-    if not isinstance(tempo, (int, float)) or isinstance(tempo, bool) or tempo <= 0:
-        _fail("project: tempo_bpm must be positive")
+    if (not isinstance(tempo, (int, float)) or isinstance(tempo, bool)
+            or tempo <= 0 or (isinstance(tempo, float) and not math.isfinite(tempo))):
+        _fail("project: tempo_bpm must be positive and finite")
     ppq = _require_positive_int(_require(project, "ppq", "project"), "project ppq")
 
     meter = _require(project, "meter", "project")
